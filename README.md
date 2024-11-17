@@ -27,7 +27,7 @@ private List<String> facebookComments;
 ```
 ### 1.1.1. Encapsulación incompleta
 
-Sin setters, getters ni constructores ni otro tipo de estructuras como bloques de instancia o staticos, no hay un control explícito sobre cómo se accede o modifica el estado de los atributos de la clase al estos ser privados.
+Sin setters, getters, constructores ni otro tipo de estructuras como bloques de instancia o staticos, no hay un control explícito sobre cómo se accede o modifica el estado de los atributos de la clase al estos ser privados.
 
 - **Mala mantenibilidad**: Si en el futuro necesitas añadir validaciones al asignar valores (como evitar que creationDate sea nulo o verificar el formato de las cuentas), será más difícil hacerlo sin los setters o un constructor controlado.
 
