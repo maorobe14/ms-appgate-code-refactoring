@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: coderefactoring
+
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/appgate
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 3211233mm3
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+
+server:
+  port: 8083
