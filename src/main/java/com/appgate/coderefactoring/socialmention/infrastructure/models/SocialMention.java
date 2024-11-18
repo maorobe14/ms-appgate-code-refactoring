@@ -1,9 +1,7 @@
 package com.appgate.coderefactoring.socialmention.infrastructure.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,6 +14,7 @@ public class SocialMention {
     private String message;
     private String facebookAccount;
     private String tweeterAccount;
+    @NotNull(message = "la fecha de creacion no puede ser nula")
     private LocalDate creationDate;
     private String tweeterUrl;
     private List<String> facebookComments;

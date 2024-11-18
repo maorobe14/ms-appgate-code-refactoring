@@ -4,10 +4,12 @@ import com.appgate.coderefactoring.socialmention.application.services.SocialMent
 import com.appgate.coderefactoring.socialmention.domain.ports.in.SocialNetworkPort;
 import com.appgate.coderefactoring.socialmention.infrastructure.factory.SocialNetworkFactory;
 import com.appgate.coderefactoring.socialmention.infrastructure.models.SocialMention;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +26,7 @@ public class SocialMentionEvaluatorController {
     SocialNetworkFactory socialNetworkFactory;
 
     @PostMapping(value = "/AnalyzeSocialMention", produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> socialMentionsEvaluator(@RequestBody SocialMention socialMention){
-        SocialNetworkPort m = socialNetworkFactory.createSocialNetworkPort(socialMention);
-        return new ResponseEntity<String>(taskServices.EvaluateSocialMentions(m), HttpStatus.OK);
+    public ResponseEntity<String> socialMentionsEvaluator(@Valid @RequestBody SocialMention socialMention){
+        return new ResponseEntity<String>(taskServices.EvaluateSocialMentions(socialNetworkFactory.createSocialNetworkPort(socialMention)), HttpStatus.OK);
     }
 }
