@@ -6,7 +6,7 @@ import com.appgate.coderefactoring.socialmention.domain.models.TweeterMention;
 import com.appgate.coderefactoring.socialmention.domain.ports.out.TweeterSocialMentionEvaluatorPort;
 import org.springframework.stereotype.Service;
 
-import static com.appgate.coderefactoring.socialmention.commons.constants.SocialNetworkConstants.RiskLevels.*;
+import static com.appgate.coderefactoring.socialmention.commons.constants.SocialNetworkConstants.RiskLevelsTweeter.*;
 import static com.appgate.coderefactoring.socialmention.commons.constants.SocialNetworkConstants.riskCategories.*;
 
 @Service
@@ -50,9 +50,9 @@ public class TweeterSocialMentionEvaluatorAdapter implements TweeterSocialMentio
 
 
         return switch (rangeCategory) {
-            case HIGH_RISK_CATEGORY -> HIGH_RISK;
-            case MEDIUM_RISK_CATEGORY -> MEDIUM_RISK;
-            default -> LOW_RISK;
+            case HIGH_RISK_CATEGORY -> HIGH_RISK_TWEETER;
+            case MEDIUM_RISK_CATEGORY -> MEDIUM_RISK_TWEETER;
+            default -> LOW_RISK_TWEETER;
         };
     }
 }

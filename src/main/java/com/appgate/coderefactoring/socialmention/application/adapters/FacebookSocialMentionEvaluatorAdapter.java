@@ -6,7 +6,7 @@ import com.appgate.coderefactoring.socialmention.domain.models.FacebookMention;
 import com.appgate.coderefactoring.socialmention.domain.ports.out.FacebookSocialMentionEvaluatorPort;
 import org.springframework.stereotype.Service;
 
-import static com.appgate.coderefactoring.socialmention.commons.constants.SocialNetworkConstants.RiskLevels.*;
+import static com.appgate.coderefactoring.socialmention.commons.constants.SocialNetworkConstants.RiskLevelsFaceBook.*;
 import static com.appgate.coderefactoring.socialmention.commons.constants.SocialNetworkConstants.riskCategories.*;
 
 @Service
@@ -39,7 +39,6 @@ public class FacebookSocialMentionEvaluatorAdapter implements FacebookSocialMent
 
         facebookScore = FacebookAnalyzer.analyzePost(facebookScore);
 
-        //dbService.insertFBPost(ANALYZED_FB_TABLE, facebookScore, message, socialMention.getFacebookAccount());
         socialMentionEventsDomain.eventAnalyzedFbPosts(facebookMention.getMessage(),facebookMention.getFacebookAccount(),facebookScore);
         return getRiskLevel(facebookScore);
 
@@ -64,9 +63,9 @@ public class FacebookSocialMentionEvaluatorAdapter implements FacebookSocialMent
                         LOW_RISK_CATEGORY;
 
         return switch (rangeCategory) {
-            case HIGH_RISK_CATEGORY -> HIGH_RISK;
-            case MEDIUM_RISK_CATEGORY -> MEDIUM_RISK;
-            default -> LOW_RISK;
+            case HIGH_RISK_CATEGORY -> HIGH_RISK_FB;
+            case MEDIUM_RISK_CATEGORY -> MEDIUM_RISK_FB;
+            default -> LOW_RISK_FB;
         };
     }
 }
