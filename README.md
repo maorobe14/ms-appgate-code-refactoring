@@ -127,7 +127,7 @@ Las validaciones en los atributos se manejaron con las siguientes estrategias:
 
 - **Validaciones mediante anotaciones de Jakarta Validation**:Para creationDate, se añadió la anotación @NotNull con un mensaje personalizado que asegura que este campo no pueda ser nulo. Esto previene errores en tiempo de ejecución derivados de valores faltantes. Validaciones similares se pueden extender a otros campos, como message, facebookAccount y tweeterAccount, para garantizar que contengan valores adecuados.
 
-- **Validaciones personalizadas (si fuera necesario)**: Las anotaciones de validación pueden complementarse con lógica específica en los setters para casos más complejos, como validar el formato de URLs o verificar la estructura de las cuentas de redes sociales.
+- **Validaciones personalizadas**: Se realizaron validaciones personalizadas para algunos casos más complejos, como validar congruencia entre cuentas de redes sociales y data enviada.
 
 ### 2.1.3. Uso correcto de tipos para las propiedades:
 
