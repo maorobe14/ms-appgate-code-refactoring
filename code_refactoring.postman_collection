@@ -1,0 +1,136 @@
+{
+	"info": {
+		"_postman_id": "0d41bed2-b245-4352-aaa4-cc4be4ddc04f",
+		"name": "code refactoring",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14185332",
+		"_collection_link": "https://claroquesisepuede.postman.co/workspace/myworkspacesamtel~b6495ba4-4e4c-4dff-9b95-b94a1ce09ee8/collection/14185332-0d41bed2-b245-4352-aaa4-cc4be4ddc04f?action=share&source=collection_link&creator=14185332"
+	},
+	"item": [
+		{
+			"name": "Record",
+			"item": [
+				{
+					"name": "insertAnalyzedFbPosts",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"facebookScore\": 85.6,\r\n  \"message\": \"Este es un ejemplo de mensaje de Facebook\",\r\n  \"facebookAccount\": \"usuario.facebook\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8083/api/v1/insertAnalyzedFbPosts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"api",
+								"v1",
+								"insertAnalyzedFbPosts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "insertAnalyzedTweets",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"tweeterScore\": 92.3,\r\n  \"message\": \"Este es un ejemplo de mensaje de Twitter\",\r\n  \"tweeterUrl\": \"https://twitter.com/usuario/tweet123\",\r\n  \"tweeterAccount\": \"usuario.twitter\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8083/api/v1/insertAnalyzedTweets",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"api",
+								"v1",
+								"insertAnalyzedTweets"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "socialMentionsEvaluatorTweeter",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"message\": \"This is a sample tweet message\",\r\n  \"facebookAccount\": null,\r\n  \"tweeterAccount\": \"maorobe_account\",\r\n  \"creationDate\": \"2024-11-17\",\r\n  \"tweeterUrl\": \"https://twitter.com/user_account/status/123456789\",\r\n  \"facebookComments\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/api/v1/AnalyzeSocialMention",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"v1",
+						"AnalyzeSocialMention"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "socialMentionsEvaluatorFacebook",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"message\": \"This is a sample tweet message\",\r\n  \"facebookAccount\": null,\r\n  \"tweeterAccount\": \"maorobe_account\",\r\n  \"creationDate\": \"2024-11-17\",\r\n  \"tweeterUrl\": \"https://twitter.com/user_account/status/123456789\",\r\n  \"facebookComments\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/api/v1/AnalyzeSocialMention",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"v1",
+						"AnalyzeSocialMention"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
