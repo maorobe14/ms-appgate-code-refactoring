@@ -15,7 +15,7 @@ public class InsertAnalyzedTweetsUseCaseImpl implements InsertAnalyzedTweetsUseC
     }
 
     @Override
-    public void insertAnalyzedTweetsUseCase(AnalyzedTweets analyzedTweets) {
+    public void insertAnalyzedTweets(AnalyzedTweets analyzedTweets) {
         analyzedTweetsRepositoryPort.save(analyzedTweets);
     }
 }

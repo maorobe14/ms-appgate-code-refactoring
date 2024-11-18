@@ -23,7 +23,7 @@ public class RecordService implements InsertAnalyzedFbPostsUseCase, InsertAnalyz
     }
 
     @Override
-    public void insertAnalyzedTweetsUseCase(AnalyzedTweets analyzedTweets) {
-        insertAnalyzedTweetsUseCase.insertAnalyzedTweetsUseCase(analyzedTweets);
+    public void insertAnalyzedTweets(AnalyzedTweets analyzedTweets) {
+        insertAnalyzedTweetsUseCase.insertAnalyzedTweets(analyzedTweets);
     }
 }

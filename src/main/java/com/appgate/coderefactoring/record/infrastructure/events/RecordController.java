@@ -1,4 +1,4 @@
-package com.appgate.coderefactoring.record.infrastructure.controllers;
+package com.appgate.coderefactoring.record.infrastructure.events;
 
 import com.appgate.coderefactoring.record.application.services.RecordService;
 import com.appgate.coderefactoring.record.domain.models.AnalyzedFbPosts;
@@ -28,7 +28,7 @@ public class RecordController {
 
     @PostMapping("/insertAnalyzedTweets")
     public ResponseEntity<Void> insertAnalyzedTweets(@RequestBody AnalyzedTweets analyzedTweets){
-        recordService.insertAnalyzedTweetsUseCase(analyzedTweets);
+        recordService.insertAnalyzedTweets(analyzedTweets);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

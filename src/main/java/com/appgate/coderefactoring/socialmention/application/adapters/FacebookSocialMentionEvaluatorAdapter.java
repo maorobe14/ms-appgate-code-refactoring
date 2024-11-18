@@ -1,6 +1,7 @@
 package com.appgate.coderefactoring.socialmention.application.adapters;
 
 import com.appgate.coderefactoring.socialmention.application.services.socialnetwork.FacebookAnalyzer;
+import com.appgate.coderefactoring.socialmention.domain.events.SocialMentionEventsDomain;
 import com.appgate.coderefactoring.socialmention.domain.models.FacebookMention;
 import com.appgate.coderefactoring.socialmention.domain.ports.out.FacebookSocialMentionEvaluatorPort;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,15 @@ import static com.appgate.coderefactoring.socialmention.commons.constants.Social
 @Service
 public class FacebookSocialMentionEvaluatorAdapter implements FacebookSocialMentionEvaluatorPort {
 
+    private final SocialMentionEventsDomain socialMentionEventsDomain;
     private static final double HIGH_RISK_THRESHOLD = 50.0;
     private static final double MEDIUM_RISK_THRESHOLD = 75.0;
     private static final double LOW_COMMENTS_SCORE_THRESHOLD  = 50.0;
     private static final double PENALTY_SCORE   = -100.0;
+
+    public FacebookSocialMentionEvaluatorAdapter(SocialMentionEventsDomain socialMentionEventsDomain) {
+        this.socialMentionEventsDomain = socialMentionEventsDomain;
+    }
 
     @Override
     public String EvaluateSocialMentionsFacebook(FacebookMention facebookMention) {
@@ -34,6 +40,7 @@ public class FacebookSocialMentionEvaluatorAdapter implements FacebookSocialMent
         facebookScore = FacebookAnalyzer.analyzePost(facebookScore);
 
         //dbService.insertFBPost(ANALYZED_FB_TABLE, facebookScore, message, socialMention.getFacebookAccount());
+        socialMentionEventsDomain.eventAnalyzedFbPosts(facebookMention.getMessage(),facebookMention.getFacebookAccount(),facebookScore);
         return getRiskLevel(facebookScore);
 
     }

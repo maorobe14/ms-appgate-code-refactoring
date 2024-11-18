@@ -1,6 +1,7 @@
 package com.appgate.coderefactoring.socialmention.application.adapters;
 
 import com.appgate.coderefactoring.socialmention.application.services.socialnetwork.TweeterAnalyzer;
+import com.appgate.coderefactoring.socialmention.domain.events.SocialMentionEventsDomain;
 import com.appgate.coderefactoring.socialmention.domain.models.TweeterMention;
 import com.appgate.coderefactoring.socialmention.domain.ports.out.TweeterSocialMentionEvaluatorPort;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,14 @@ import static com.appgate.coderefactoring.socialmention.commons.constants.Social
 @Service
 public class TweeterSocialMentionEvaluatorAdapter implements TweeterSocialMentionEvaluatorPort {
 
+    private final SocialMentionEventsDomain socialMentionEventsDomain;
     private static final double LOW_RISK_THRESHOLD = -1;
     private static final double MEDIUM_RISK_THRESHOLD_LOWER = -0.5;
     private static final double MEDIUM_RISK_THRESHOLD_UPPER = 0.7;
+
+    public TweeterSocialMentionEvaluatorAdapter(SocialMentionEventsDomain socialMentionEventsDomain) {
+        this.socialMentionEventsDomain = socialMentionEventsDomain;
+    }
 
 
     @Override
@@ -27,6 +33,7 @@ public class TweeterSocialMentionEvaluatorAdapter implements TweeterSocialMentio
                 tweeterMention.getTweeterAccount()
         );
 
+        socialMentionEventsDomain.eventAnalyzedTweets(tweeterMention.getMessage(),tweeterMention.getTweeterUrl(),tweeterScore,tweeterMention.getTweeterAccount());
         //dbService.insertTweet(ANALYZED_TWEETS_TABLE, tweeterScore, message, socialMention.getTweeterAccount());
         return getRiskLevel(tweeterScore);
     }
