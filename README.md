@@ -27,7 +27,7 @@ private List<String> facebookComments;
 ```
 ### 1.1.1. Encapsulación incompleta
 
-Sin setters, getters, constructores ni otro tipo de estructuras como bloques de instancia o staticos, no hay un control explícito sobre cómo se accede o modifica el estado de los atributos de la clase al estos ser privados.
+Sin setters, getters ni constructores ni otro tipo de estructuras como bloques de instancia o staticos, no hay un control explícito sobre cómo se accede o modifica el estado de los atributos de la clase al estos ser privados.
 
 - **Mala mantenibilidad**: Si en el futuro necesitas añadir validaciones al asignar valores (como evitar que creationDate sea nulo o verificar el formato de las cuentas), será más difícil hacerlo sin los setters o un constructor controlado.
 
@@ -100,5 +100,77 @@ Este código genera una violación de algunos **principios SOLID** y **CLEAN COD
 
 - **Comentarios Innecesarios**: En Clean Code, uno de los principios clave es evitar comentarios innecesarios. La idea es que el código debe ser lo suficientemente claro y expresivo por sí mismo, de modo que los comentarios solo sean necesarios en casos excepcionales. Si se escriben comentarios sobre lo que hace el código, es una señal de que el código no está lo suficientemente claro o legible.
 
+- **Lógica Compleja y Duplicada (Avoid Duplication)**: Hay bloques de código repetidos, como los condicionales que calculan las puntuaciones para Facebook y Twitter. Esto puede generar dificultades para mantener el código en el futuro
+
+- **Uso Incorrecto de Condiciones (Avoid Nested Conditionals)**: Hay condiciones anidadas y múltiples bloques if y else que dificultan la legibilidad y la comprensión del flujo del código. Especialmente cuando se maneja la puntuación de facebookScore y tweeterScore en diferentes rangos.
+
 - **Regla KISS**: la simplicidad debe ser la meta, y las soluciones complejas deben evitarse a menos que realmente sean necesarias.
 
+---
+## 2. Solución de malas practicas.
+---
+
+## 2.1. Clase SocialMention.
+
+### 2.1.1. Encapsulación incompleta:
+Para abordar la falta de encapsulación, se implementaron los siguientes cambios:
+
+- **Getters y Setters**: Se añadieron métodos de acceso (getters) y modificación (setters) para cada uno de los atributos de la clase. Esto asegura un control adecuado sobre el acceso y modificación de los datos encapsulados, permitiendo en el futuro integrar lógica adicional (como validaciones) si es necesario.
+
+- **Constructores parametrizados y sin argumentos**: Se añadieron un constructor sin argumentos (necesario para frameworks como Hibernate y Jackson, ambos empleados en este proeycto) y otro parametrizado, que facilita la creación de instancias con valores iniciales. Esto mejora la mantenibilidad y permite una inicialización consistente.
+
+- **Anotaciones de Lombok**: Se usaron las anotaciones @Getter, @Setter, @NoArgsConstructor y @AllArgsConstructor de Lombok para reducir el código repetitivo, manteniendo la clase limpia y legible.
+
+### 2.1.2. Validaciones en las propiedades:
+
+Las validaciones en los atributos se manejaron con las siguientes estrategias:
+
+- **Validaciones mediante anotaciones de Jakarta Validation**:Para creationDate, se añadió la anotación @NotNull con un mensaje personalizado que asegura que este campo no pueda ser nulo. Esto previene errores en tiempo de ejecución derivados de valores faltantes. Validaciones similares se pueden extender a otros campos, como message, facebookAccount y tweeterAccount, para garantizar que contengan valores adecuados.
+
+- **Validaciones personalizadas (si fuera necesario)**: Las anotaciones de validación pueden complementarse con lógica específica en los setters para casos más complejos, como validar el formato de URLs o verificar la estructura de las cuentas de redes sociales.
+
+### 2.1.3. Uso correcto de tipos para las propiedades:
+
+Se corrigió el tipo de dato de la propiedad creationDate de String a LocalDate. Este cambio ofrece los siguientes beneficios:
+
+- **Manipulación adecuada de fechas**: LocalDate proporciona métodos nativos para comparar, formatear y realizar operaciones con fechas, eliminando errores comunes al trabajar con cadenas que representan fechas.
+
+- **Mejor integración con bases de datos**: Al usar un tipo específico de fecha, frameworks como JPA pueden mapear correctamente esta propiedad a un tipo de dato de fecha en la base de datos, cumpliendo con las reglas del principio ACID y mejorando la consistencia de los datos.
+
+---
+
+## 2.2. Controlador clase SocialMentionController .
+
+### 2.2.1. Violación de Principios SOLID 
+
+- **Responsabilidad Única**: se hizo una refactorización integral utilizando un enfoque orientado al dominio y patrones de diseño, lo que mejora significativamente la claridad, la mantenibilidad y la escalabilidad del código.
+
+    - El uso de un enfoque orientado al dominio permite modelar las funcionalidades clave del sistema en clases que representen los conceptos y comportamientos del dominio de negocio. En lugar de tener una clase controladora masiva que hace todo, el código ahora está organizado en entidades, servicios de dominio y repositorios, lo que permite una mejor representación de la lógica de negocio.
+
+    - Se empleo el patrón de diseño creacional Factory para crear objetos diferentes dependiendo de la red social con la que se esté interactuando (por ejemplo, un analizador de comentarios de Facebook o Twitter). En lugar de crear instancias de clases concretas directamente en el controlador, se delega en una fábrica que se encarga de instanciar el objeto adecuado según el tipo de red social que se esté analizando, Esto desacopla la lógica de creación de instancias del controlador, lo que hace que el código sea más flexible y fácil de extender si se agregan más redes sociales en el futuro.
+
+    - Se crearon las clases con responsabilidad única, de igual forma los metodos e interfaces.
+
+    
+- **inversión de dependencias**: Para la solución em apoye en el modulo de spring Spring Data JPA, lo que implica la creación de un repositorio que gestiona la interacción con la base de datos. Este enfoque resuelve el problema de Inversión de Dependencias (DIP) ya que logra el desacoplamiento entre los modulos alto nivel con los de bajo nivel, ademas mejora la flexibilidad, escalabilidad y mantenibilidad del código.
+
+- **Abierto/Cerrado**: Para seguir el principio de Abierto/Cerrado, se separó la lógica de análisis de los comentarios de Facebook y Twitter en clases independientes que implementan una interfaz común. Cada clase representa el comportamiento específico de análisis de cada red social. De este modo, si en el futuro se agrega una nueva red social (por ejemplo, Instagram o LinkedIn), solo será necesario crear una nueva clase que implemente la interfaz sin necesidad de modificar el controlador o las clases existentes.
+
+
+### 2.2.2. Violación de Clean Code
+
+- **Responsabilidad Única (SRP)**: Se aplicó el principio de Responsabilidad Única (SRP) dividiendo la lógica del controlador en servicios especializados, como se explico anteriormente.
+
+- **Códigos Mágicos y Valores Hardcodeados**: Estos valores fueron reemplazados por constantes descriptivas en una clase transversal o en las clases donde se encontraban implementados. 
+
+- **Metodos cortos (Small Methods)**: Se desglosaron las tareas del método analyze en métodos pequeños con nombres descriptivos. Evitando que sobrepasaran las 20 lineas de código.
+
+- **Definición y Nombres Inadecuados**: Se renombraron clases, métodos y variables para que su propósito fuera claro. y así mismo se llevo a cabo una definición clara de cada elemento del software creado.
+
+- **Comentarios Innecesarios**: Se eliminaron comentarios redundantes que explicaban lo que hacía el código. Estos comentarios no agregaban valor y solo llenaban de texto el código.
+
+- **Lógica Compleja y Duplicada (Avoid Duplication)**: Se reorganizaron las condiciones para reducir la anidación y hacer que el flujo fuera más claro. Se utilizaron sentencias switch o polimorfismo cuando era adecuado, eliminando las condiciones anidadas innecesarias. Adicionalmente, se emplearon patrones de diseño como **Facade** para mejorar la legibilidad y encapsular la complejidad. El patrón Facade simplifica la interacción con sistemas complejos al proporcionar una interfaz única y coherente, evitando que el cliente tenga que gestionar múltiples interacciones con clases o servicios internos.
+
+- **Uso Incorrecto de Condiciones (Avoid Nested Conditionals)**: Se utilizaron sentencias switch y polimorfismo, eliminando las condiciones anidadas innecesarias. Ademas con el desacoplamiento de las redes sociales tambien se logro disminuir el numero de condicionales necesarios, facilitando la comprensión y mantenimiento del código.
+
+- **Regla KISS**: Se aplicaron principios de diseño más simples, eliminando lógica innecesaria y mejorando la estructura general del código. Se usaron patrones de diseño y arquitectura adecuados para organizar mejor la lógica sin hacer el sistema más complejo.
